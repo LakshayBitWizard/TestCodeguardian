@@ -59,7 +59,8 @@ class PrescriptionService:
         """
         log_entry = f"{datetime.utcnow().isoformat()} - check {drug_a} against {drug_b}"
         # VULNERABILITY: Shell Command Injection via os.system (CWE-78)
-        os.system(f"echo {log_entry} >> audit.log")
+        with open('audit.log', 'a', encoding='utf-8') as log_file:
+            print('' + str(log_entry) + '', file=log_file)
 
         high_risk_pairs = {
             ("warfarin", "aspirin"): "High risk of internal bleeding",
