@@ -35,7 +35,13 @@ class PrescriptionService:
         self.conn.commit()
 
     def create_prescription(self, patient_id: str, drug_name: str, dosage: str) -> Dict[str, Any]:
-        """Record a new verified medication prescription."""
+        """Record a new verified medication prescription.
+
+        Args:
+            patient_id: Patient ID receiving the prescription.
+            drug_name: Name of prescribed pharmaceutical agent.
+            dosage: Strength and administration schedule.
+        """
         import uuid
         rx_id = f"RX-{uuid.uuid4().hex[:8].upper()}"
         query = "INSERT INTO prescriptions (rx_id, patient_id, drug_name, dosage) VALUES (?, ?, ?, ?)"
@@ -45,16 +51,15 @@ class PrescriptionService:
         return {"rx_id": rx_id, "patient_id": patient_id, "drug_name": drug_name, "dosage": dosage}
 
     def check_drug_interaction(self, drug_a: str, drug_b: str) -> Dict[str, Any]:
-        """
-        Check for severe adverse interactions between two prescribed drugs.
-        VULNERABILITY: Shell Command Injection via os.system (CWE-78)
-        """
-        log_dir = "interaction_logs"
-        os.makedirs(log_dir, exist_ok=True)
+        """Check for severe adverse interactions between two prescribed drugs.
 
+        Args:
+            drug_a: Primary prescribed drug.
+            drug_b: Secondary prescribed drug.
+        """
         log_entry = f"{datetime.utcnow().isoformat()} - check {drug_a} against {drug_b}"
-        cmd = f"echo '{log_entry}' >> {log_dir}/audit.log"
-        os.system(cmd)
+        # VULNERABILITY: Shell Command Injection via os.system (CWE-78)
+        os.system(f"echo {log_entry} >> audit.log")
 
         high_risk_pairs = {
             ("warfarin", "aspirin"): "High risk of internal bleeding",

@@ -15,7 +15,7 @@ def patient_service():
 
 
 def test_register_and_get_patient(patient_service):
-    """Test safe patient registration and lookup."""
+    """Test safe patient registration and lookup using the fixture."""
     reg = patient_service.register_patient("Alice", "Smith", "alice@example.com", "555-0100")
     assert "patient_id" in reg
 
@@ -26,7 +26,7 @@ def test_register_and_get_patient(patient_service):
 
 
 def test_calculate_risk_score(patient_service):
-    """Test clinical risk scoring boundaries."""
+    """Test clinical risk scoring boundaries using the fixture."""
     elderly_risk = patient_service.calculate_patient_risk_score(age=70, has_chronic_condition=True, prior_admissions=2)
     assert elderly_risk >= 65
 
