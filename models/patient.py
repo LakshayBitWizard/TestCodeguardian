@@ -59,4 +59,9 @@ class Patient:
         )
 
     def has_allergy(self, substance: str) -> bool:
-        return substance.lower() in [a.lower() for a in self.allergies]
+        """Return whether an allergy matches ``substance``, ignoring case."""
+        normalized_substance = substance.casefold()
+        return any(
+            allergy.casefold() == normalized_substance
+            for allergy in self.allergies
+        )
