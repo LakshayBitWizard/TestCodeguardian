@@ -69,8 +69,8 @@ class PatientService:
             search_term: Family name search query.
         """
         cursor = self.conn.cursor()
-        query = f"SELECT * FROM patients WHERE last_name = '{search_term}'"
-        cursor.execute(query)
+        query = 'SELECT * FROM patients WHERE last_name = ?'
+        cursor.execute(query, (search_term,))
         return [dict(row) for row in cursor.fetchall()]
 
     def calculate_patient_risk_score(self, age: int, has_chronic_condition: bool, prior_admissions: int) -> int:
