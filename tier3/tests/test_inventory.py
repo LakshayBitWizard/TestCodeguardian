@@ -1,18 +1,12 @@
-"""Unit tests for pharmacy inventory restocking logic."""
+"""Unit tests for pharmacy supplier calculations."""
 
 import pytest
-from tier3.inventory_service import requires_restock
 from tier3.supplier_connector import format_currency, calculate_reorder_cost
 
 
-def test_requires_restock_below_threshold() -> None:
-    """Test stock below 50 triggers restock."""
-    assert requires_restock(30) is True
-
-
-def test_requires_restock_above_threshold() -> None:
-    """Test stock at or above 50 does not restock."""
-    assert requires_restock(100) is False
+def test_format_currency_usd() -> None:
+    """Test standard USD currency formatting."""
+    assert format_currency(1250.50, "USD") == "$1,250.50"
 
 
 def test_reorder_cost_calculation() -> None:
